@@ -1,4 +1,4 @@
-package ece.controller;
+package fr.ece.controller;
 
 import java.io.BufferedReader;
 import java.io.IOException;
