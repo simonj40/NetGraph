@@ -3,6 +3,9 @@ package fr.ece.controller;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Pattern;
 
 public class Traceroute extends Thread {
 
@@ -29,14 +32,16 @@ public class Traceroute extends Thread {
 			tracer("tracert " + this.address);
 		}else{
 			System.out.println("This is not Windows");
-			tracer("traceroute " + this.address);
+			tracer("traceroute -n " + this.address);
 		}
+		
 		
 		
 	}
 
 	private void tracer(String command){
 		String s = null;
+		List<String> list = new ArrayList<String>();
 		try {
 			Process p = Runtime.getRuntime().exec(command);
 
@@ -46,16 +51,33 @@ public class Traceroute extends Thread {
 
 			while ((s = input.readLine()) != null) {
 				System.out.println(s);
-				traceroute += s;
+				String ip = extractIp(s);
+				if(ip!=null) list.add(ip);
 			}
-			System.out.println("RESPONSE");
-			System.out.println(traceroute);
-
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
+		Controller.draw(list);
+	}
+	
+	private String extractIp(String line){
+		
+		List<String> list = new ArrayList<String>();
+		
+		String[] str = line.split("\\s+");
+		
+		for(int i=0;i<str.length;i++){
+			String temp = str[i].replace("\\s+", "");
+			//System.out.print(temp+",");
+			if(!temp.isEmpty()) list.add(temp);
+		}
+		
+		if(list.get(1).length()>6) return list.get(1);
+		return null;
+		
 	}
 	
 	
