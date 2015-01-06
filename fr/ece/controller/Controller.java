@@ -1,51 +1,62 @@
 package fr.ece.controller;
 
 import java.util.List;
+import fr.ece.view.MainWindow;
 
-import javax.swing.JFrame;
 
-
-//JUNG import
 public class Controller {
-
+	
+	// OS name
 	private static String osName = System.getProperty("os.name").toLowerCase();
-	private static String address = "google.fr";
-	private static JFrame frame;
-
 	
-	
+	private static MainWindow window;
+	private static Grapher grapher;
 	
 	public static void main(String[] args) {
+		// create and launch the ShutDown hook
+		AddShutdownHook asdh = new AddShutdownHook();
+		asdh.attachShutDownHook();
+		
+		grapher = new Grapher();
+		
+		window = new MainWindow();
 
-		frame = new JFrame("Traceroute");
-	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	    
-	    //draw();
-	    //drawInitialize;
-		
-		Traceroute tr = new Traceroute(osName, address);
-		tr.start();
-		Traceroute tr2 = new Traceroute(osName, "facebook.com");
-		tr2.start();
-		
-		
 	}
 	
-	
-	
-	
-	public static synchronized void draw(List<String> list){
-
+	/**
+	 * method called by the class traceroute once the process is done
+	 * Treat the new traceroute IP link list
+	 * @param list
+	 */
+	public static synchronized void drawTraceroute(List<String> list){
 		
+		//add new ip link to the local ip list and generate the new graph file
+		grapher.draw(list);
+		//call dot program on the graph file
+		Dot dot = new Dot(osName);
+		dot.start();
 		
-		//write new ip links in file
-		//add new ip to local list
+		try {
+			//wait for dot process to be done
+			dot.join();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
-		//call dot on file
-		//refresh view
-		
-		
+		//Update the view
+		window.loadGraph();
 		
 	}
+
+
+	
+	
+	
+	
+	
+	
+	
+	
 	
 }
