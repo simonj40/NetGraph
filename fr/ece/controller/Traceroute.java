@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Traceroute extends Thread {
@@ -12,6 +13,8 @@ public class Traceroute extends Thread {
 	
 	private static String osName;
 	private static String address;
+	
+	private static String FAKE_TRACEROUTE = "java -jar fakeroute.jar ";
 
 	public Traceroute(String osName, String address){
 		this.osName = osName;
@@ -25,10 +28,12 @@ public class Traceroute extends Thread {
 		 */
 		if( this.osName.indexOf("win") >= 0 ){
 			System.out.println("This is Windows");
-			tracer("tracert " + this.address);
+			//tracer("tracert " + this.address);
+			tracer(FAKE_TRACEROUTE + this.address);
 		}else{
 			System.out.println("This is not Windows");
-			tracer("traceroute -n " + this.address);
+			//tracer("traceroute -n " + this.address);
+			tracer(FAKE_TRACEROUTE + this.address);
 		}
 		
 	}
@@ -53,13 +58,10 @@ public class Traceroute extends Thread {
 			
 			// reads the result of the command line per line
 			while ((s = input.readLine()) != null) {
-				//displays the line
-				System.out.println(s);
 				//extracts the ip address of the line and stores it in the ip list
 				String ip = extractIp(s);
 				if(ip!=null) ipList.add(ip);
 			}
-			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -81,21 +83,22 @@ public class Traceroute extends Thread {
 	 */
 	private String extractIp(String line){
 		
-		List<String> list = new ArrayList<String>();
-		//split the line according to the delimiter " " (space) 
-		String[] str = line.split("\\s+");
-
-		for(int i=0;i<str.length;i++){
-			//remove all the spaces from the splited part
-			String temp = str[i].replace("\\s+", "");
-			//test if its not empty and add it to a list
-			if(!temp.isEmpty()) list.add(temp);
+		System.out.println(line);
+		
+		if (line != null) {
+			String IPADDRESS_PATTERN = "(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)";
+			Pattern pattern = Pattern.compile(IPADDRESS_PATTERN, Pattern.CASE_INSENSITIVE);
+			Matcher matcher = pattern.matcher(line);
+			String ip = null;
+			while (matcher.find()) {
+				ip = matcher.group() + "\n";
+				System.out.println(ip);
+			}
+			
+			return ip;
+		}else{
+			return null;
 		}
-		
-		// test if the position corresponding to the ip address fits the ip format and retrieve return the ip address
-		if(list.get(1).length()>6) return list.get(1);
-		return null;
-		
 	}
 	
 	
