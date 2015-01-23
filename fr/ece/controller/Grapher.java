@@ -1,7 +1,7 @@
 /**
  * 
  */
-package fr.ece.controller;
+package ece.controller;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -34,7 +34,8 @@ public class Grapher {
 	 * 		List containing the IP links of the new traceroute
 	 */
 	public void draw(List<String> list){
-		
+
+
 		//adds new ip link to local list
 		for(String link : list){	
 			if(!existInList(link)){
@@ -42,6 +43,7 @@ public class Grapher {
 				localIpList.add(link);
 			}
 		}
+		System.out.println("list size..." + list);
 		
 		//update graph text file with new local ip links list
 		UpdateFile();
@@ -55,7 +57,7 @@ public class Grapher {
 		//delete the previous file if it exists
 		File tempFile =  new File(PATH);
 		tempFile.delete();
-		//creates a new ile
+		//creates a new file
 		File graphFile = new File(PATH);
 		//open a stream to the file
 		FileOutputStream fos = null;
@@ -66,7 +68,9 @@ public class Grapher {
 			osw = new OutputStreamWriter(fos);
 			//writes the file with the new links
 			osw.write("digraph G {\n");
+			System.out.println("loop content..." + localIpList.size());
 			for(String link : localIpList){
+
 				osw.write(link + ";\n");
 			}
 			osw.write("}");

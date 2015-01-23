@@ -1,4 +1,4 @@
-package fr.ece.controller;
+package ece.controller;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -73,6 +73,7 @@ public class Traceroute extends Thread {
 		}
 		
 		//final call of the thread, to treats the ip link list and add it to the displayed graph
+		//System.out.println("list size..." + linkList);
 		Controller.drawTraceroute(linkList);
 	}
 	

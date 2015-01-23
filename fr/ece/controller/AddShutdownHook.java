@@ -1,7 +1,7 @@
 /**
  * 
  */
-package fr.ece.controller;
+package ece.controller;
 
 import java.io.File;
 

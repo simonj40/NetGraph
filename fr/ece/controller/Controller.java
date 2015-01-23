@@ -1,7 +1,7 @@
-package fr.ece.controller;
+package ece.controller;
 
 import java.util.List;
-import fr.ece.view.MainWindow;
+import ece.view.MainWindow;
 
 
 public class Controller {

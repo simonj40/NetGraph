@@ -1,7 +1,7 @@
 /**
  * 
  */
-package fr.ece.view;
+package ece.view;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -29,15 +29,14 @@ public class Graph extends JPanel{
     	//Open a stream to the image
     	Image image=null;
     	try {
+
             image = ImageIO.read( new File("temp.png") );
             super.paintComponent(g);
             g.drawImage(image, 0, 0, this);
         } catch (Exception e) {
-            e.printStackTrace();
+
         }
-    	
-    	
-    	
+
         
     }
 }

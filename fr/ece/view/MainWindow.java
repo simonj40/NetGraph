@@ -1,4 +1,4 @@
-package fr.ece.view;
+package ece.view;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -13,8 +13,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
-import fr.ece.controller.Controller;
-import fr.ece.controller.Traceroute;
+import ece.controller.Controller;
+import ece.controller.Traceroute;
 
 /**
  * main window of the program
