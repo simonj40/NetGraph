@@ -10,7 +10,6 @@ import java.util.regex.Pattern;
 
 public class Traceroute extends Thread {
 
-	
 	private static String osName;
 	private static String address;
 	
