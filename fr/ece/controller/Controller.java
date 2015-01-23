@@ -1,7 +1,9 @@
-package ece.controller;
+package fr.ece.controller;
 
 import java.util.List;
-import ece.view.MainWindow;
+
+import fr.ece.model.Traceroute;
+import fr.ece.view.MainWindow;
 
 
 public class Controller {
@@ -11,15 +13,16 @@ public class Controller {
 	
 	private static MainWindow window;
 	private static Grapher grapher;
+	private static Traceroute traceroute;
 	
 	public static void main(String[] args) {
 		// create and launch the ShutDown hook
 		AddShutdownHook asdh = new AddShutdownHook();
 		asdh.attachShutDownHook();
 		
-		grapher = new Grapher();
+		traceroute = new Traceroute(osName);
 		
-		window = new MainWindow();
+		window = new MainWindow(traceroute);
 
 	}
 	
@@ -28,10 +31,10 @@ public class Controller {
 	 * Treat the new traceroute IP link list
 	 * @param list
 	 */
-	public static synchronized void drawTraceroute(List<String> list){
+	public static synchronized void drawTraceroute(){
 		
 		//add new ip link to the local ip list and generate the new graph file
-		grapher.draw(list);
+		Grapher.UpdateFile(traceroute.getLocalIpList());
 		//call dot program on the graph file
 		Dot dot = new Dot(osName);
 		dot.start();

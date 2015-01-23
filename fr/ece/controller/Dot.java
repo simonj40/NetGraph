@@ -1,7 +1,7 @@
 /**
  * 
  */
-package ece.controller;
+package fr.ece.controller;
 
 import java.io.File;
 import java.io.IOException;

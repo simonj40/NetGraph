@@ -1,4 +1,7 @@
-package ece.view;
+package fr.ece.view;
+import fr.ece.controller.Controller;
+import fr.ece.model.Traceroute;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -13,8 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
-import ece.controller.Controller;
-import ece.controller.Traceroute;
+
 
 /**
  * main window of the program
@@ -26,10 +28,13 @@ public class MainWindow extends JFrame implements ActionListener {
 	private JButton button; 
 	private Graph graph;
 	private JTextField ip;
-	
-	private String osName = System.getProperty("os.name").toLowerCase();
 
-	public MainWindow(){
+	private String osName = System.getProperty("os.name").toLowerCase();
+	Traceroute traceroute;
+
+	public MainWindow(Traceroute traceroute){
+		this.traceroute =  traceroute;
+		
 		//set window properties
 		this.setTitle("Traceroute");
 	    this.setMinimumSize(new Dimension(500,500));
@@ -77,10 +82,9 @@ public class MainWindow extends JFrame implements ActionListener {
 	 */
 	public void actionPerformed(ActionEvent e) {
 		//retrieve the content of the text field
-		String input = ip.getText();
+		String address = ip.getText();
 		//launch a new traceroute 
-		Traceroute tr = new Traceroute(osName, input);
-		tr.start();
+		traceroute.newTraceroute(address);
 	}
 	 
 	

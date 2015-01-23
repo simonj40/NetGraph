@@ -1,7 +1,7 @@
 /**
  * 
  */
-package ece.view;
+package fr.ece.view;
 
 import java.awt.Color;
 import java.awt.Graphics;

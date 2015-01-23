@@ -1,7 +1,7 @@
 /**
  * 
  */
-package ece.controller;
+package fr.ece.controller;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -19,41 +19,12 @@ import java.util.List;
 public class Grapher {
 
 	
-	private String PATH = "temp";
-	//list containing all the ip links since the first traceroute or the last reset
-	private List<String> localIpList;
-
-	
-	public Grapher(){
-		localIpList = new ArrayList<String>();
-	}
-	
-	/**
-	 * Go through the new ip link list in parameter and add them to the local ip link list if they don't exist in it
-	 * @param list
-	 * 		List containing the IP links of the new traceroute
-	 */
-	public void draw(List<String> list){
-
-
-		//adds new ip link to local list
-		for(String link : list){	
-			if(!existInList(link)){
-				//add to local list
-				localIpList.add(link);
-			}
-		}
-		System.out.println("list size..." + list);
-		
-		//update graph text file with new local ip links list
-		UpdateFile();
-		
-	}
+	private static String PATH = "temp";
 	
 	/**
 	 * replace the existing graph text file by a new file containing the last version of the local ip link list
 	 */
-	public void UpdateFile(){
+	public static void UpdateFile(List<String> localIpList){
 		//delete the previous file if it exists
 		File tempFile =  new File(PATH);
 		tempFile.delete();
@@ -84,20 +55,5 @@ public class Grapher {
 		}
 		
 	}
-	/**
-	 * test if the ip link already exists in the local list
-	 * @param link
-	 * @return
-	 * 		true if already exists
-	 * 		false otherwise
-	 */
-	public boolean existInList(String link){
-		
-		for(String localLink : localIpList){
-			if(localLink.equals(link)) return true;
-		}
-		return false;
-		
-	}
-	
+
 }
