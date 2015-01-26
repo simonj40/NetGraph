@@ -21,7 +21,7 @@ public class Traceroute {
 
     private String osName;
     private String PATH = "temp";
-    
+
     private TracerouteOverviewController listener;
 
     //list containing all the ip links since the first traceroute or the last reset
@@ -38,7 +38,7 @@ public class Traceroute {
     public List<String> getLocalIpList() {
         return localIpList;
     }
-    
+
     public void setListener(TracerouteOverviewController listener) {
         this.listener = listener;
     }
@@ -48,22 +48,22 @@ public class Traceroute {
         Tracerouter tracerouter = new Tracerouter(address);
 
         tracerouter.messageProperty().addListener(new ChangeListener<String>() {
-            
+
             public void changed(ObservableValue<? extends String> observable,
                     String oldValue, String newValue) {
 //TODO action when traceroute thread over
                 listener.updateGraph();
             }
 
-            
-
         });
-        
-        ( new Thread (tracerouter) ).start();
+
+        (new Thread(tracerouter)).start();
 
     }
 
     public void updateFile(List<String> localIpList) {
+        listener.progression(0.6);
+
         //delete the previous file if it exists
         File tempFile = new File(PATH);
         tempFile.delete();
@@ -99,6 +99,7 @@ public class Traceroute {
      * @param linkList
      */
     private void updateIpList(List<String> linkList) {
+
         //adds new ip link to local list
         for (String link : linkList) {
             if (!existInList(link)) {
@@ -106,6 +107,7 @@ public class Traceroute {
                 localIpList.add(link);
             }
         }
+        listener.progression(0.4);
 
     }
 
@@ -126,31 +128,29 @@ public class Traceroute {
 
     }
 
-    
     /**
-	 * method called by the class traceroute once the process is done
-	 * Treat the new traceroute IP link list
-	 */
-	public synchronized void drawTraceroute(){
-		
-		//add new ip link to the local ip list and generate the new graph file
-		updateFile(localIpList);
-		//call dot program on the graph file
-		Dot dot = new Dot(osName);
-		dot.start();
-		
-		try {
-			//wait for dot process to be done
-			dot.join();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-	}
+     * method called by the class traceroute once the process is done Treat the
+     * new traceroute IP link list
+     */
+    public synchronized void drawTraceroute() {
+        listener.progression(0.8);
 
-        
-        
+        //add new ip link to the local ip list and generate the new graph file
+        updateFile(localIpList);
+        //call dot program on the graph file
+        Dot dot = new Dot(osName);
+        dot.start();
+
+        try {
+            //wait for dot process to be done
+            dot.join();
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+    }
+
     //TODO add listener on tracerouter that trigger when tracerouter thread is done and lauch proper treatement 
     public class Tracerouter extends Task<Object> {
 
@@ -167,6 +167,7 @@ public class Traceroute {
             /**
              * test the OS and execute the correpsonding command
              */
+
             if (osName.indexOf("win") >= 0) {
                 System.out.println("This is Windows");
                 //tracer("tracert " + this.address);
@@ -203,9 +204,10 @@ public class Traceroute {
                 // reads the result of the command line per line
                 while ((s = input.readLine()) != null) {
                     //extracts the ip address of the line and stores it in the ip list
-                                System.out.println(s);
+                    System.out.println(s);
                     String ip = extractIp(s);
                     if (ip != null) {
+                       
                         ipList.add(ip);
                     }
                 }
@@ -236,6 +238,7 @@ public class Traceroute {
          * @return the extracted line
          */
         private String extractIp(String line) {
+            listener.progression(0.2);
 
             System.out.println(line);
 

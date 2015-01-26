@@ -8,33 +8,34 @@
 <?import javafx.scene.layout.BorderPane?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.ece.view.TracerouteOverviewController">
-   <children>
-      <BorderPane prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <top>
-            <AnchorPane prefHeight="44.0" prefWidth="600.0" BorderPane.alignment="CENTER">
-               <children>
-                  <TextField fx:id="ip_input" layoutX="14.0" layoutY="9.0" prefHeight="25.0" prefWidth="181.0" />
-                  <Button fx:id="traceroute_button" layoutX="211.0" layoutY="9.0" mnemonicParsing="false" onAction="#traceRoute" prefHeight="25.0" prefWidth="90.0" text="Traceroute !">
-                     <font>
-                        <Font name="System Bold" size="12.0" />
-                     </font></Button>
-                  <Button fx:id="reset" layoutX="312.0" layoutY="9.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="56.0" text="Reset" />
-                  <ProgressBar fx:id="progress_bar" layoutX="386.0" layoutY="12.0" prefWidth="200.0" progress="0.0" />
-               </children>
-            </AnchorPane>
-         </top>
-         <center>
-            <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-               <children>
-                  <ImageView fitHeight="357.0" fitWidth="600.0" pickOnBounds="true" />
-                  <ScrollPane prefHeight="357.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <content>
-                        <ImageView fx:id="imageview" pickOnBounds="true" preserveRatio="true" />
-                     </content>
-                  </ScrollPane>
-               </children>
-            </AnchorPane>
-         </center>
-      </BorderPane>
-   </children>
+    <children>
+        <BorderPane prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <top>
+                <AnchorPane prefHeight="44.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+                    <children>
+                        <TextField fx:id="ip_input" layoutX="14.0" layoutY="9.0" prefHeight="25.0" prefWidth="217.0" />
+                        <Button fx:id="traceroute_button" layoutX="241.0" layoutY="10.0" mnemonicParsing="false" onAction="#traceRoute" prefHeight="25.0" prefWidth="90.0" text="Traceroute!">
+                            <font>
+                                <Font name="System Bold" size="12.0" />
+                            </font>
+                        </Button>
+                        <Button fx:id="reset" layoutX="340.0" layoutY="10.0" mnemonicParsing="false" onAction="#reset" prefHeight="25.0" prefWidth="56.0" text="Reset" />
+                        <ProgressBar fx:id="progress_bar" layoutX="405.0" layoutY="12.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="18.0" prefWidth="183.0" progress="0.0" />
+                    </children>
+                </AnchorPane>
+            </top>
+            <center>
+                <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                    <children>
+                        <ImageView fitHeight="357.0" fitWidth="600.0" pickOnBounds="true" />
+                        <ScrollPane prefHeight="357.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <content>
+                                <ImageView fx:id="imageview" pickOnBounds="true" preserveRatio="true" />
+                            </content>
+                        </ScrollPane>
+                    </children>
+                </AnchorPane>
+            </center>
+        </BorderPane>
+    </children>
 </AnchorPane>

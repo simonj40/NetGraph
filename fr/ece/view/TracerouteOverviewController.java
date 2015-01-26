@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -46,14 +47,14 @@ public class TracerouteOverviewController {
         System.out.println("test : " + ip);
 
         traceroute.newTraceroute(ip);
-        System.out.println("test : " + ip);
-        ip_input.clear();
 
     }
 
     @FXML
     public void initialize() {
         // create and launch the ShutDown hook
+        progress_bar.setProgress(0);
+
         AddShutdownHook asdh = new AddShutdownHook();
         asdh.attachShutDownHook();
 
@@ -61,15 +62,31 @@ public class TracerouteOverviewController {
         traceroute.setListener(this);
     }
 
+    public void reset() {
+        progress_bar.setProgress(0);
+        ip_input.clear();
+        InputStream clear;
+        imageview.setImage(null);
+        System.out.println("Reset");
+
+    }
+
+    public void progression(double prog) {
+        progress_bar.setProgress(prog);
+
+    }
+
     public void updateGraph() {
 
         InputStream is;
         try {
+
             is = new FileInputStream(GRAPH_PATH);
             Image image = new Image(is);
             imageview.setImage(image);
+            progress_bar.setProgress(1);
             System.out.println("Mise à jour de l'image");
-            
+
         } catch (FileNotFoundException ex) {
             Logger.getLogger(TracerouteOverviewController.class.getName()).log(Level.SEVERE, null, ex);
         }
