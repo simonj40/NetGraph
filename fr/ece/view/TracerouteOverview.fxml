@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.effect.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.control.*?>
@@ -20,15 +21,16 @@
                             </font>
                         </Button>
                         <Button fx:id="reset" layoutX="340.0" layoutY="10.0" mnemonicParsing="false" onAction="#reset" prefHeight="25.0" prefWidth="56.0" text="Reset" />
-                        <ProgressBar fx:id="progress_bar" layoutX="405.0" layoutY="12.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="18.0" prefWidth="183.0" progress="0.0" />
+                        <ProgressBar fx:id="progress_bar" layoutX="405.0" layoutY="12.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="20.0" prefWidth="116.0" progress="0.0" />
+                  <Button layoutX="527.0" layoutY="9.0" mnemonicParsing="false" onAction="#focusOn" prefHeight="13.0" prefWidth="14.0" text="+" />
+                  <Button layoutX="566.0" layoutY="9.0" mnemonicParsing="false" onAction="#focusOut" prefHeight="13.0" prefWidth="14.0" text="-" />
                     </children>
                 </AnchorPane>
             </top>
             <center>
                 <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                     <children>
-                        <ImageView fitHeight="357.0" fitWidth="600.0" pickOnBounds="true" />
-                        <ScrollPane prefHeight="357.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <ScrollPane fx:id="scroll" prefHeight="357.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <content>
                                 <ImageView fx:id="imageview" pickOnBounds="true" preserveRatio="true" />
                             </content>

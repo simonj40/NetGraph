@@ -5,18 +5,23 @@ package fr.ece.view;
 
 import fr.ece.controller.AddShutdownHook;
 import fr.ece.model.Traceroute;
+
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ProgressIndicator;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.ScrollEvent;
 
 /**
  * @author Simon
@@ -34,10 +39,13 @@ public class TracerouteOverviewController {
     private ProgressBar progress_bar;
     @FXML
     private ImageView imageview;
+    
+    @FXML 
+    private ScrollPane scroll;
 
     private Traceroute traceroute;
 
-    private String GRAPH_PATH = "temp.png";
+    public String GRAPH_PATH = "temp.png";
     // OS name
     private static String osName = System.getProperty("os.name").toLowerCase();
 
@@ -75,19 +83,32 @@ public class TracerouteOverviewController {
         progress_bar.setProgress(prog);
 
     }
+    @FXML
+    public void focusOn( ){
+    	imageview.setScaleX(imageview.getScaleX()*1.1);
+    	imageview.setScaleY(imageview.getScaleY()*1.1);
+    }
+    @FXML    
+    public void focusOut( ){
+    	imageview.setScaleX(imageview.getScaleX()*0.9);
+    	imageview.setScaleY(imageview.getScaleY()*0.9);
+    }
+    
 
+    @FXML
     public void updateGraph() {
 
         InputStream is;
         try {
-
+        	
             is = new FileInputStream(GRAPH_PATH);
             Image image = new Image(is);
             imageview.setImage(image);
             progress_bar.setProgress(1);
             System.out.println("Mise à jour de l'image");
 
-        } catch (FileNotFoundException ex) {
+
+        } catch (Exception ex) {
             Logger.getLogger(TracerouteOverviewController.class.getName()).log(Level.SEVERE, null, ex);
         }
 

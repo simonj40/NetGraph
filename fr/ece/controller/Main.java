@@ -20,8 +20,8 @@ public class Main extends Application {
         try {
 
             FXMLLoader loader = new FXMLLoader();
-            //loader.setLocation(Main.class.getResource("TracerouteOverview.fxml"));
-            loader.setLocation(Main.class.getResource("/fr/ece/view/TracerouteOverview.fxml"));
+            loader.setLocation(Main.class.getResource("../view/TracerouteOverview.fxml"));
+            //loader.setLocation(Main.class.getResource("/fr/ece/view/TracerouteOverview.fxml"));
             rootLayout = (AnchorPane) loader.load();
             Scene scene = new Scene(rootLayout);
             primaryStage.setScene(scene);

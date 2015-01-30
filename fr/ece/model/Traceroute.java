@@ -2,8 +2,11 @@ package fr.ece.model;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
@@ -16,6 +19,7 @@ import fr.ece.view.TracerouteOverviewController;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
+import javafx.scene.image.Image;
 
 public class Traceroute {
 
@@ -23,6 +27,8 @@ public class Traceroute {
     private String PATH = "temp";
 
     private TracerouteOverviewController listener;
+    
+   
 
     //list containing all the ip links since the first traceroute or the last reset
     private List<String> localIpList;
@@ -50,8 +56,8 @@ public class Traceroute {
         tracerouter.messageProperty().addListener(new ChangeListener<String>() {
 
             public void changed(ObservableValue<? extends String> observable,
-                    String oldValue, String newValue) {
-//TODO action when traceroute thread over
+                String oldValue, String newValue) {
+            	//TODO action when traceroute thread over
                 listener.updateGraph();
             }
 
@@ -110,7 +116,7 @@ public class Traceroute {
         listener.progression(0.4);
 
     }
-
+    
     /**
      * test if the ip link already exists in the local list
      *
@@ -128,6 +134,16 @@ public class Traceroute {
 
     }
 
+    public boolean imageIsReady(){
+    	try {
+			Image image = new Image(listener.GRAPH_PATH);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+    }
+    
+    
     /**
      * method called by the class traceroute once the process is done Treat the
      * new traceroute IP link list
@@ -140,10 +156,11 @@ public class Traceroute {
         //call dot program on the graph file
         Dot dot = new Dot(osName);
         dot.start();
-
+        
         try {
             //wait for dot process to be done
             dot.join();
+            
         } catch (InterruptedException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -178,6 +195,10 @@ public class Traceroute {
                 tracer(FAKE_TRACEROUTE + this.address);
             }
 
+            //final call of the thread, to treats the ip link list and add it to the displayed graph
+            //System.out.println("list size..." + linkList);
+            drawTraceroute();
+            
             updateMessage("Traceroute to " + this.address + "is done");
             return null;
         }
@@ -225,9 +246,7 @@ public class Traceroute {
 
             System.out.println(localIpList.size());
 
-            //final call of the thread, to treats the ip link list and add it to the displayed graph
-            //System.out.println("list size..." + linkList);
-            drawTraceroute();
+            
         }
 
         /**

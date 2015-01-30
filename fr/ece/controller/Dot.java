@@ -35,16 +35,6 @@ public class Dot extends Thread {
         } else {
             execDot(LINUX_DOT);
         }
-
-        //For the file created by dot to be fully generated and accessible 
-        boolean wait = true;
-        while (wait) {
-            File f = new File("temp.png");
-            if (f.exists()) {
-                wait = false;
-            }
-        }
-
     }
 
     /**
@@ -55,8 +45,8 @@ public class Dot extends Thread {
     public void execDot(String command) {
         System.out.println("this is the command..." + command);
         try {
-            Runtime.getRuntime().exec(command);
-        } catch (IOException e) {
+            Runtime.getRuntime().exec(command).waitFor();
+        } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
