@@ -71,12 +71,16 @@ public class TracerouteOverviewController {
     }
 
     public void reset() {
-        progress_bar.setProgress(0);
-        ip_input.clear();
-        InputStream clear;
-        imageview.setImage(null);
-        System.out.println("Reset");
-
+    	
+    	traceroute.resetTracerouter();
+    	progression(0);
+    	imageview.setImage(null);
+    	
+//        progress_bar.setProgress(0);
+//        ip_input.clear();
+//        InputStream clear;
+//        imageview.setImage(null);
+//        System.out.println("Reset");
     }
 
     public void progression(double prog) {
@@ -104,7 +108,6 @@ public class TracerouteOverviewController {
             is = new FileInputStream(GRAPH_PATH);
             Image image = new Image(is);
             imageview.setImage(image);
-            progress_bar.setProgress(1);
             System.out.println("Mise à jour de l'image");
 
 

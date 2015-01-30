@@ -32,12 +32,28 @@ public class Traceroute {
 
     //list containing all the ip links since the first traceroute or the last reset
     private List<String> localIpList;
+    
+    private List<Tracerouter> tracerouterList;
 
     public Traceroute(String osName) {
         this.osName = osName;
         localIpList = new ArrayList<String>();
+        tracerouterList= new ArrayList<Tracerouter>();
     }
 
+    public void resetTracerouter(){
+    	//Cancel all current runing traceroute
+    	for(Tracerouter tr : tracerouterList){
+    		tr.cancel();
+    	}
+    	//empty tracerouteList
+    	tracerouterList.removeAll(tracerouterList);
+    	
+    	//empty localIpList
+    	localIpList.removeAll(localIpList);
+    }
+    
+    
     /**
      * @return the localIpList
      */
@@ -52,7 +68,8 @@ public class Traceroute {
     public void newTraceroute(String address) {
 
         Tracerouter tracerouter = new Tracerouter(address);
-
+        tracerouterList.add(tracerouter);
+        //set listener anc action on traceroute finishing
         tracerouter.messageProperty().addListener(new ChangeListener<String>() {
 
             public void changed(ObservableValue<? extends String> observable,
@@ -62,13 +79,33 @@ public class Traceroute {
             }
 
         });
+        
+
+        //set listener and action on progress update
+        tracerouter.progressProperty().addListener(new ChangeListener<Object>() {
+			@Override
+			public void changed(ObservableValue<? extends Object> observable,
+					Object oldValue, Object newValue) {
+				double progress = 0;
+				
+				for(Tracerouter tr : tracerouterList){
+					progress += tr.progressProperty().doubleValue();
+					System.out.println(tr.progressProperty().doubleValue());
+				}
+				
+				progress = progress/(double)tracerouterList.size();
+				System.out.println("TOTAL : " + progress);
+				listener.progression(progress);
+			}
+
+        });
+        
 
         (new Thread(tracerouter)).start();
 
     }
 
     public void updateFile(List<String> localIpList) {
-        listener.progression(0.6);
 
         //delete the previous file if it exists
         File tempFile = new File(PATH);
@@ -113,7 +150,6 @@ public class Traceroute {
                 localIpList.add(link);
             }
         }
-        listener.progression(0.4);
 
     }
     
@@ -149,7 +185,6 @@ public class Traceroute {
      * new traceroute IP link list
      */
     public synchronized void drawTraceroute() {
-        listener.progression(0.8);
 
         //add new ip link to the local ip list and generate the new graph file
         updateFile(localIpList);
@@ -172,6 +207,7 @@ public class Traceroute {
     public class Tracerouter extends Task<Object> {
 
         private String address;
+        private long progressMax = 6;
 
         private String FAKE_TRACEROUTE = "java -jar fakeroute.jar ";
 
@@ -184,7 +220,7 @@ public class Traceroute {
             /**
              * test the OS and execute the correpsonding command
              */
-
+        	this.updateProgress(1, progressMax);
             if (osName.indexOf("win") >= 0) {
                 System.out.println("This is Windows");
                 //tracer("tracert " + this.address);
@@ -198,8 +234,9 @@ public class Traceroute {
             //final call of the thread, to treats the ip link list and add it to the displayed graph
             //System.out.println("list size..." + linkList);
             drawTraceroute();
-            
+            this.updateProgress(6, progressMax);
             updateMessage("Traceroute to " + this.address + "is done");
+            tracerouterList.remove(this);
             return null;
         }
 
@@ -213,6 +250,7 @@ public class Traceroute {
             String s = null;
             List<String> ipList = new ArrayList<String>();
             List<String> linkList = new ArrayList<String>();
+            long progress = 1;
 
             try {
                 //executes the tracereoute command
@@ -228,8 +266,10 @@ public class Traceroute {
                     System.out.println(s);
                     String ip = extractIp(s);
                     if (ip != null) {
-                       
+                    	
                         ipList.add(ip);
+                        progress += 1/50;
+                        this.updateProgress(1 + progress, progressMax);
                     }
                 }
             } catch (IOException e) {
@@ -241,9 +281,11 @@ public class Traceroute {
                 String link = "\"" + ipList.get(i) + "\" -> \"" + ipList.get(i + 1) + "\"";
                 linkList.add(link);
             }
-
+            
+            this.updateProgress(3, progressMax);
+            
             updateIpList(linkList);
-
+            this.updateProgress(4, progressMax);
             System.out.println(localIpList.size());
 
             
@@ -257,8 +299,6 @@ public class Traceroute {
          * @return the extracted line
          */
         private String extractIp(String line) {
-            listener.progression(0.2);
-
             System.out.println(line);
 
             if (line != null) {

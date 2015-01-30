@@ -24,6 +24,7 @@ public class Main extends Application {
             //loader.setLocation(Main.class.getResource("/fr/ece/view/TracerouteOverview.fxml"));
             rootLayout = (AnchorPane) loader.load();
             Scene scene = new Scene(rootLayout);
+            scene.getStylesheets().add(Main.class.getResource("application.css").toString());
             primaryStage.setScene(scene);
             primaryStage.show();
 
