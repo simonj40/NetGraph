@@ -108,12 +108,17 @@
 			</fileset>
 			<fx:resources refid="appRes"/>
 
+
+
 			<manifest>
 				<attribute name="Implementation-Vendor" value="ece"/>
 				<attribute name="Implementation-Title" value="NetGraph"/>
 				<attribute name="Implementation-Version" value="1.0"/>
 				<attribute name="JavaFX-Feature-Proxy" value="None"/>
+
 			</manifest>
+
+
 		</fx:jar>
 
 

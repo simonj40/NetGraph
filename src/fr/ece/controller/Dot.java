@@ -17,7 +17,7 @@ public class Dot extends Thread {
     //link to the dot program according to the OS
     private String MAC_DOT = "/usr/local/bin/dot -Tpng temp -o temp.png";
     private String WIN_DOT = "C:\\Program Files (x86)\\Graphviz*\\bin\\dot.exe -Tpng temp -o temp.png";
-    private String LINUX_DOT = "/usr/local/bin/dot -Tpng temp -o temp.png";
+    private String LINUX_DOT = "/usr/bin/dot -Tpng temp -o temp.png";
     
     private String osName;
 
