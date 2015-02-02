@@ -66,7 +66,6 @@ public class TracerouteOverviewController {
         try {
 			InetAddress adress = InetAddress.getByName(input);
 			String ip = extractIp(adress.toString());
-			System.out.println(ip);
 			if(ip != null){
 				traceroute.newTraceroute( ip, fakeroute );
 			}else{
@@ -100,8 +99,6 @@ public class TracerouteOverviewController {
      * @return the extracted line
      */
     private String extractIp(String line) {
-        //System.out.println(line);
-
         if (line != null) {
             String IPADDRESS_PATTERN = "(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)";
             Pattern pattern = Pattern.compile(IPADDRESS_PATTERN, Pattern.CASE_INSENSITIVE);

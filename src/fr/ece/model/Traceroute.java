@@ -116,11 +116,9 @@ public class Traceroute {
 				
 				for(Tracerouter tr : tracerouterList){
 					progress += tr.progressProperty().doubleValue();
-					//System.out.println(tr.progressProperty().doubleValue());
 				}
 				
 				progress = progress/(double)tracerouterList.size();
-				//System.out.println("TOTAL : " + progress);
 				listener.progression(progress);
 			}
 
@@ -143,7 +141,6 @@ public class Traceroute {
             osw = new OutputStreamWriter(fos);
             //writes the file with the new links
             osw.write("digraph G {\n");
-            //System.out.println("loop content..." + localIpList.size());
             for (String link : localIpList) {
                 osw.write(link + ";\n");
             }
@@ -240,7 +237,6 @@ public class Traceroute {
         	tracer(TRACEROUTER + this.address);
 
             //final call of the thread, to treats the ip link list and add it to the displayed graph
-            //System.out.println("list size..." + linkList);
             drawTraceroute();
             this.updateProgress(6, progressMax);
             updateMessage("Traceroute to " + this.address + "is done");
@@ -295,7 +291,6 @@ public class Traceroute {
             
             updateIpList(linkList);
             this.updateProgress(4, progressMax);
-            //System.out.println(localIpList.size());
 
             
         }
@@ -308,7 +303,6 @@ public class Traceroute {
          * @return the extracted line
          */
         private String extractIp(String line) {
-            //System.out.println(line);
 
             if (line != null) {
                 String IPADDRESS_PATTERN = "(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)";
@@ -320,7 +314,6 @@ public class Traceroute {
                 while (matcher.find()) {
                     ip += matcher.group() + "\n";  
                 }
-                //System.out.println("IP LIGNE : " + ip);
                 return ip;
             } else {
                 return null;
