@@ -75,7 +75,6 @@ public class TracerouteOverviewController {
 		} catch (Exception e) {
 			//display prompt
 			showAlert(input);
-			e.printStackTrace();
 		}
 
     }
