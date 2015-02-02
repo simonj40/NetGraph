@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.*?>
 <?import javafx.scene.effect.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.image.*?>
@@ -14,7 +15,7 @@
             <top>
                 <AnchorPane prefHeight="44.0" prefWidth="600.0" BorderPane.alignment="CENTER">
                     <children>
-                        <TextField fx:id="ip_input" layoutX="14.0" layoutY="9.0" prefHeight="25.0" prefWidth="217.0" />
+                        <TextField fx:id="ip_input" layoutX="14.0" layoutY="9.0" onAction="#traceRoute" prefHeight="25.0" prefWidth="217.0" />
                         <Button fx:id="traceroute_button" layoutX="241.0" layoutY="10.0" mnemonicParsing="false" onAction="#traceRoute" prefHeight="25.0" prefWidth="90.0" text="Traceroute!">
                             <font>
                                 <Font name="System Bold" size="12.0" />
@@ -31,9 +32,13 @@
                 <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                     <children>
                         <ScrollPane fx:id="scroll" prefHeight="357.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                            <content>
-                                <ImageView fx:id="imageview" pickOnBounds="true" preserveRatio="true" />
-                            </content>
+                     <content>
+                        <Group>
+                           <children>
+                              <ImageView fx:id="imageview" fitHeight="344.0" fitWidth="590.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Group>
+                     </content>
                         </ScrollPane>
                     </children>
                 </AnchorPane>

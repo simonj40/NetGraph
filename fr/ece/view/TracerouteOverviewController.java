@@ -76,24 +76,24 @@ public class TracerouteOverviewController {
     	progression(0);
     	imageview.setImage(null);
     	
-//        progress_bar.setProgress(0);
-//        ip_input.clear();
-//        InputStream clear;
-//        imageview.setImage(null);
-//        System.out.println("Reset");
     }
 
     public void progression(double prog) {
         progress_bar.setProgress(prog);
 
     }
+    
     @FXML
     public void focusOn( ){
     	imageview.setScaleX(imageview.getScaleX()*1.1);
     	imageview.setScaleY(imageview.getScaleY()*1.1);
+    	imageview.setX(0);
+    	imageview.setY(0);
     }
+    
     @FXML    
     public void focusOut( ){
+    	
     	imageview.setScaleX(imageview.getScaleX()*0.9);
     	imageview.setScaleY(imageview.getScaleY()*0.9);
     }
@@ -108,8 +108,8 @@ public class TracerouteOverviewController {
             is = new FileInputStream(GRAPH_PATH);
             Image image = new Image(is);
             imageview.setImage(image);
-            System.out.println("Mise à jour de l'image");
-
+            imageview.setFitHeight(scroll.getHeight());
+            imageview.setFitWidth(scroll.getWidth());
 
         } catch (Exception ex) {
             Logger.getLogger(TracerouteOverviewController.class.getName()).log(Level.SEVERE, null, ex);

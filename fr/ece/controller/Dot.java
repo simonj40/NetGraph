@@ -43,7 +43,6 @@ public class Dot extends Thread {
      * @param command
      */
     public void execDot(String command) {
-        System.out.println("this is the command..." + command);
         try {
             Runtime.getRuntime().exec(command).waitFor();
         } catch (Exception e) {

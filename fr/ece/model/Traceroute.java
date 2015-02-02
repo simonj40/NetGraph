@@ -90,11 +90,11 @@ public class Traceroute {
 				
 				for(Tracerouter tr : tracerouterList){
 					progress += tr.progressProperty().doubleValue();
-					System.out.println(tr.progressProperty().doubleValue());
+					//System.out.println(tr.progressProperty().doubleValue());
 				}
 				
 				progress = progress/(double)tracerouterList.size();
-				System.out.println("TOTAL : " + progress);
+				//System.out.println("TOTAL : " + progress);
 				listener.progression(progress);
 			}
 
@@ -121,11 +121,11 @@ public class Traceroute {
             osw = new OutputStreamWriter(fos);
             //writes the file with the new links
             osw.write("digraph G {\n");
-            System.out.println("loop content..." + localIpList.size());
+            //System.out.println("loop content..." + localIpList.size());
             for (String link : localIpList) {
-
                 osw.write(link + ";\n");
             }
+            
             osw.write("}");
 
             osw.close();
@@ -222,11 +222,11 @@ public class Traceroute {
              */
         	this.updateProgress(1, progressMax);
             if (osName.indexOf("win") >= 0) {
-                System.out.println("This is Windows");
+                //System.out.println("This is Windows");
                 //tracer("tracert " + this.address);
                 tracer(FAKE_TRACEROUTE + this.address);
             } else {
-                System.out.println("This is not Windows");
+                //System.out.println("This is not Windows");
                 //tracer("traceroute -n " + this.address);
                 tracer(FAKE_TRACEROUTE + this.address);
             }
@@ -263,7 +263,7 @@ public class Traceroute {
                 // reads the result of the command line per line
                 while ((s = input.readLine()) != null) {
                     //extracts the ip address of the line and stores it in the ip list
-                    System.out.println(s);
+                    //System.out.println(s);
                     String ip = extractIp(s);
                     if (ip != null) {
                     	
@@ -286,7 +286,7 @@ public class Traceroute {
             
             updateIpList(linkList);
             this.updateProgress(4, progressMax);
-            System.out.println(localIpList.size());
+            //System.out.println(localIpList.size());
 
             
         }
@@ -299,18 +299,19 @@ public class Traceroute {
          * @return the extracted line
          */
         private String extractIp(String line) {
-            System.out.println(line);
+            //System.out.println(line);
 
             if (line != null) {
                 String IPADDRESS_PATTERN = "(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)";
+                
+                
                 Pattern pattern = Pattern.compile(IPADDRESS_PATTERN, Pattern.CASE_INSENSITIVE);
                 Matcher matcher = pattern.matcher(line);
-                String ip = null;
+                String ip = "";
                 while (matcher.find()) {
-                    ip = matcher.group() + "\n";
-                    System.out.println(ip);
+                    ip += matcher.group() + "\n";  
                 }
-
+                //System.out.println("IP LIGNE : " + ip);
                 return ip;
             } else {
                 return null;
