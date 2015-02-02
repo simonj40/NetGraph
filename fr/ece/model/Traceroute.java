@@ -2,11 +2,8 @@ package fr.ece.model;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
@@ -28,7 +25,11 @@ public class Traceroute {
 
     private TracerouteOverviewController listener;
     
-   
+    private String FAKE_TRACEROUTE = "java -jar fakeroute.jar ";
+    private String WIN_TRACEROUTE = "tracert ";
+    private String UNIX_TRACEROUTE = "traceroute -n ";
+
+    private String TRACEROUTE;
 
     //list containing all the ip links since the first traceroute or the last reset
     private List<String> localIpList;
@@ -39,6 +40,14 @@ public class Traceroute {
         this.osName = osName;
         localIpList = new ArrayList<String>();
         tracerouterList= new ArrayList<Tracerouter>();
+        //Initialize the OS_TRACEROUTE variable
+        if (osName.indexOf("win") >= 0) {
+        	TRACEROUTE = WIN_TRACEROUTE;
+        			
+        } else {
+        	TRACEROUTE = UNIX_TRACEROUTE;
+        }
+        
     }
 
     public void resetTracerouter(){
@@ -65,11 +74,28 @@ public class Traceroute {
         this.listener = listener;
     }
 
-    public void newTraceroute(String address) {
+    public void newTraceroute(String address, boolean fakeroute) {
 
-        Tracerouter tracerouter = new Tracerouter(address);
+    	Tracerouter tracerouter;
+    	if(fakeroute){
+    		tracerouter = new Tracerouter(address, FAKE_TRACEROUTE);
+    	}else{
+    		tracerouter = new Tracerouter(address, TRACEROUTE);
+    	}
+        
         tracerouterList.add(tracerouter);
-        //set listener anc action on traceroute finishing
+        
+        setTracerouteListener(tracerouter);
+        
+        (new Thread(tracerouter)).start();
+
+    }
+
+	/**
+	 * @param tracerouter
+	 */
+	private void setTracerouteListener(Tracerouter tracerouter) {
+		//set listener anc action on traceroute finishing
         tracerouter.messageProperty().addListener(new ChangeListener<String>() {
 
             public void changed(ObservableValue<? extends String> observable,
@@ -99,11 +125,7 @@ public class Traceroute {
 			}
 
         });
-        
-
-        (new Thread(tracerouter)).start();
-
-    }
+	}
 
     public void updateFile(List<String> localIpList) {
 
@@ -168,17 +190,7 @@ public class Traceroute {
         }
         return false;
 
-    }
-
-    public boolean imageIsReady(){
-    	try {
-			Image image = new Image(listener.GRAPH_PATH);
-			return true;
-		} catch (Exception e) {
-			return false;
-		}
-    }
-    
+    }   
     
     /**
      * method called by the class traceroute once the process is done Treat the
@@ -208,11 +220,14 @@ public class Traceroute {
 
         private String address;
         private long progressMax = 6;
+        
+        private String TRACEROUTER;
 
-        private String FAKE_TRACEROUTE = "java -jar fakeroute.jar ";
+        
 
-        public Tracerouter(String address) {
+        public Tracerouter(String address, String TRACEROUTER ) {
             this.address = address;
+            this.TRACEROUTER =  TRACEROUTER;
         }
 
         @Override
@@ -221,15 +236,8 @@ public class Traceroute {
              * test the OS and execute the correpsonding command
              */
         	this.updateProgress(1, progressMax);
-            if (osName.indexOf("win") >= 0) {
-                //System.out.println("This is Windows");
-                //tracer("tracert " + this.address);
-                tracer(FAKE_TRACEROUTE + this.address);
-            } else {
-                //System.out.println("This is not Windows");
-                //tracer("traceroute -n " + this.address);
-                tracer(FAKE_TRACEROUTE + this.address);
-            }
+            
+        	tracer(TRACEROUTER + this.address);
 
             //final call of the thread, to treats the ip link list and add it to the displayed graph
             //System.out.println("list size..." + linkList);
@@ -264,6 +272,7 @@ public class Traceroute {
                 while ((s = input.readLine()) != null) {
                     //extracts the ip address of the line and stores it in the ip list
                     //System.out.println(s);
+
                     String ip = extractIp(s);
                     if (ip != null) {
                     	

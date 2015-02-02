@@ -10,11 +10,18 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.ScrollPane;
@@ -36,6 +43,8 @@ public class TracerouteOverviewController {
     @FXML
     private TextField ip_input;
     @FXML
+    private CheckBox fakerouteBox;
+    @FXML
     private ProgressBar progress_bar;
     @FXML
     private ImageView imageview;
@@ -51,11 +60,61 @@ public class TracerouteOverviewController {
 
     @FXML
     public void traceRoute() {
-        String ip = ip_input.getText();
-        System.out.println("test : " + ip);
+        String input = ip_input.getText();
+        boolean fakeroute = fakerouteBox.isSelected();
+        
+        try {
+			InetAddress adress = InetAddress.getByName(input);
+			String ip = extractIp(adress.toString());
+			System.out.println(ip);
+			if(ip != null){
+				traceroute.newTraceroute( ip, fakeroute );
+			}else{
+				throw new Exception("error with the address");
+			}
 
-        traceroute.newTraceroute(ip);
+		} catch (Exception e) {
+			//display prompt
+			showAlert(input);
+			e.printStackTrace();
+		}
 
+    }
+    
+    private void showAlert(String address){
+    	
+    	Alert alert = new Alert(AlertType.ERROR);
+		alert.setTitle("Invalid Address");
+		alert.setHeaderText(null);
+		alert.setContentText("The address you entered is not valid !");
+		alert.showAndWait();
+    	
+    }
+    
+    
+    /**
+     * extract from a String line of the traceroute result the corresponding
+     * ip address
+     *
+     * @param line
+     * @return the extracted line
+     */
+    private String extractIp(String line) {
+        //System.out.println(line);
+
+        if (line != null) {
+            String IPADDRESS_PATTERN = "(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)";
+            Pattern pattern = Pattern.compile(IPADDRESS_PATTERN, Pattern.CASE_INSENSITIVE);
+            Matcher matcher = pattern.matcher(line);
+            String ip = null;
+            
+            if (matcher.find()) {
+                ip = matcher.group();  
+            }
+            return ip;
+        } else {
+            return null;
+        }
     }
 
     @FXML
@@ -85,8 +144,8 @@ public class TracerouteOverviewController {
     
     @FXML
     public void focusOn( ){
-    	imageview.setScaleX(imageview.getScaleX()*1.1);
-    	imageview.setScaleY(imageview.getScaleY()*1.1);
+    	imageview.setScaleX(imageview.getScaleX()*1.2);
+    	imageview.setScaleY(imageview.getScaleY()*1.2);
     	imageview.setX(0);
     	imageview.setY(0);
     }
@@ -94,8 +153,8 @@ public class TracerouteOverviewController {
     @FXML    
     public void focusOut( ){
     	
-    	imageview.setScaleX(imageview.getScaleX()*0.9);
-    	imageview.setScaleY(imageview.getScaleY()*0.9);
+    	imageview.setScaleX(imageview.getScaleX()*0.8);
+    	imageview.setScaleY(imageview.getScaleY()*0.8);
     }
     
 
