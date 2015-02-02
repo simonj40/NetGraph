@@ -1,0 +1,14 @@
+Prerequisite
+
+Before you build our traceroute application, check that you've installed last java 1.8 version.
+You also need to have GraphViz installed on you computer, especially its Dot component.
+
+Building
+you need to have Apache Ant installed in order to build the project.
+
+To build the application, just execute ant in the folder /build , where the ant script build.xml is located.
+
+
+Running
+once builded, you can run the jar file generated in build/dist/.
+If you want to be able to use the fakeroute function, which emulate a fake traceroute, you need to make sure the jar file 'fakeroute.jar' is located in the same folder as
