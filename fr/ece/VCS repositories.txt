@@ -1,0 +1,12 @@
+********* ING4 Java Project *********
+Japheth KOSGEI
+Simon JASPAR
+Vincent RAKOTOMANGA
+
+URL of the project : https://github.com/simonj40/NetGraph
+We choose to use git because all of us know how to use it.
+
+How to extract the trunk :
+1. Go on https://github.com/simonj40/NetGraph
+2. Click on Download ZIP
+3. Extract it
